@@ -2,8 +2,8 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import { setListing, setFavourite, removeFavourite } from '../redux/actions/actionCreators';
-import withLocalStorage from '../hocs/withLocalStorage';
+import { setListing, setFavourite, removeFavourite } from '../../redux/actions/actionCreators';
+import withLocalStorage from '../../hocs/withLocalStorage';
 
 function Listing({ getEntry, setEntry, removeEntry }) {
   const { isFavourite, listing } = useSelector((state) => state.listing);
@@ -47,9 +47,9 @@ function Listing({ getEntry, setEntry, removeEntry }) {
     removeEntry(lister_url);
   };
 
-  //   if (!listing) {
-  //     return <Redirect to="/" />;
-  //   }
+  if (!listing) {
+    return <Redirect to="/" />;
+  }
 
   return (
     <main className="main">

@@ -1,10 +1,13 @@
 import React, { useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import {
   searchLocation, setSearchField, setSearches, setErrorAC,
-} from '../redux/actions/actionCreators';
-import withLocalStorage from '../hocs/withLocalStorage';
+} from '../../redux/actions/actionCreators';
+import withLocalStorage from '../../hocs/withLocalStorage';
+import Locations from './Locations';
+import RecentSearches from './RecentSearches';
 
 function PropertySearch({ getEntry }) {
   const {
@@ -53,40 +56,11 @@ function PropertySearch({ getEntry }) {
     }));
   };
 
-  const recentSearchesSlot = (array) => (
-    <ul className="recent-searches">
-      {array.map((item) => (
-        <li
-          className="recent-search"
-          data-name={item.name}
-          onClick={handleClick}
-          onKeyPress={handleClick}
-        >
-          <span className="recent-search__name">{item.name}</span>
-          {' '}
-          <span className="recent-search__number">{item.props}</span>
-        </li>
-      ))}
-    </ul>
-  );
-
-  const locationsSlot = (array) => (
-    <ul>
-      {array.map((item) => (
-        <li className="location" data-name={item.place_name} onClick={handleClick}>
-          <span className="location__name">
-            {item.title}
-          </span>
-        </li>
-      ))}
-    </ul>
-  );
-
+  const recentSearchesSlot = <RecentSearches recentSearches={recentSearches} onClick={handleClick} />;
+  const locationsSlot = <Locations locations={locations} onClick={handleClick} />;
+  const errorSlot = <span>{error}</span>;
   const box = (
-    <div>
-      <span>{locations ? 'Please select a location below:' : recentSearches ? 'Recent Searches:' : ''}</span>
-      {locations ? locationsSlot(locations) : recentSearches.length > 0 ? recentSearchesSlot(recentSearches) : ''}
-    </div>
+    locations ? locationsSlot : recentSearchesSlot
   );
 
   const handleSearchByLocation = () => {
@@ -133,10 +107,14 @@ function PropertySearch({ getEntry }) {
 
           <button type="button" onClick={handleSearchByLocation}>My location</button>
 
-          {error ? <span>{error}</span> : box}
+          {error ? errorSlot : box}
         </div>
       )
   );
 }
+
+PropertySearch.propTypes = {
+  getEntry: PropTypes.func.isRequired,
+};
 
 export default withLocalStorage('recentSearches', PropertySearch);

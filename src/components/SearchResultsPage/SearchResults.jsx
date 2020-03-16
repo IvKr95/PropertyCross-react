@@ -4,14 +4,14 @@ import { Redirect } from 'react-router-dom';
 import {
   setListing,
   searchLocation,
-} from '../redux/actions/actionCreators';
+} from '../../redux/actions/actionCreators';
+import Listings from './Listings';
 
 
 function SearchResults(props) {
   const {
     listings, currentlyDisplayed, total, searchTerm, page,
   } = useSelector((state) => state.searchResults);
-  const { listing } = useSelector((state) => state.listing);
   const dispatch = useDispatch();
 
   const handleClick = (event) => {
@@ -29,12 +29,10 @@ function SearchResults(props) {
     }));
   };
 
-  if (listing) {
-    return <Redirect to="/listing-page" />;
-  }
   if (listings.length === 0) {
     return <Redirect to="/" />;
   }
+
   return (
     <div>
       <h2>
@@ -46,19 +44,9 @@ of
         {' '}
 matches
       </h2>
-      <ul className="listings">
-        {listings.map((listing) => (
-          <li className="listing" data-about={JSON.stringify(listing)} onClick={handleClick}>
-            <img className="listing__thumb" src={listing.thumb_url} alt={listing.title} width={listing.thumb_width} height={listing.thumb_height} />
-            <span className="listing__price">
-              {listing.price_formatted}
-            </span>
-            <span className="listing__title">
-              {listing.title}
-            </span>
-          </li>
-        ))}
-      </ul>
+
+      <Listings listings={listings} onClick={handleClick} />
+
       {currentlyDisplayed < total && <button type="button" className="load-more" onClick={loadMore}>Load more</button>}
       <p>
 Results for
