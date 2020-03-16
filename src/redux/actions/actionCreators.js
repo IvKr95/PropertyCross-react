@@ -6,6 +6,7 @@ import {
   SET_ERROR,
   SET_LISTING,
   SET_FAVOURITE,
+  SET_FAVOURITES,
   REMOVE_FAVOURITE,
 } from './types';
 import RecentSearches from '../../dal/RecentSearches';
@@ -28,6 +29,11 @@ export const setListing = (payload) => ({
 
 export const setFavourite = (payload) => ({
   type: SET_FAVOURITE,
+  payload,
+});
+
+export const setFavourites = (payload) => ({
+  type: SET_FAVOURITES,
   payload,
 });
 

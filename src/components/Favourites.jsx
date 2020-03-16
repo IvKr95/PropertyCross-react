@@ -2,14 +2,17 @@
 import React, { useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { setListing, setFavourite } from '../redux/actions/actionCreators';
+import { setListing, setFavourites } from '../redux/actions/actionCreators';
+import withLocalStorage from '../hocs/withLocalStorage';
 
-function Favourites(props) {
+function Favourites({ getEntry }) {
   const favourites = useSelector((state) => state.favourites);
   const { listing } = useSelector((state) => state.listing);
   const dispatch = useDispatch();
 
   useEffect(() => {
+    const entry = getEntry();
+    dispatch(setFavourites(entry));
   }, []);
 
   const handleClick = (event) => {
@@ -41,4 +44,4 @@ function Favourites(props) {
   );
 }
 
-export default Favourites;
+export default withLocalStorage('favourites', Favourites);
