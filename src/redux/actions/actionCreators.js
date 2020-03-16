@@ -58,6 +58,11 @@ const setLocationsAC = (payload) => ({
   payload,
 });
 
+const changePage = (payload) => ({
+  type: 'CHANGE_PAGE',
+  payload,
+});
+
 export const searchLocation = (api, params) => (dispatch) => {
   axiosInstance.get(api, { params })
     .then((result) => {
@@ -71,6 +76,9 @@ export const searchLocation = (api, params) => (dispatch) => {
               name: result.data.request.location,
               props: result.data.response.total_results,
             });
+
+            dispatch(changePage('searchResults'));
+
             dispatch(setPropsAC({
               currentlyDisplayed: Number(result.data.request.num_res),
               searchTerm: result.data.request.location,

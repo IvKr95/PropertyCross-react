@@ -8,6 +8,7 @@ import {
 import withLocalStorage from '../../hocs/withLocalStorage';
 import Locations from './Locations';
 import RecentSearches from './RecentSearches';
+import Error from './Error';
 
 function PropertySearch({ getEntry }) {
   const {
@@ -58,7 +59,7 @@ function PropertySearch({ getEntry }) {
 
   const recentSearchesSlot = <RecentSearches recentSearches={recentSearches} onClick={handleClick} />;
   const locationsSlot = <Locations locations={locations} onClick={handleClick} />;
-  const errorSlot = <span>{error}</span>;
+  const errorSlot = <Error error={error} />;
   const box = (
     locations ? locationsSlot : recentSearchesSlot
   );

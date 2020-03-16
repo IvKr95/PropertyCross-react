@@ -52,7 +52,7 @@ matches
 Results for
         {' '}
         {searchTerm}
-term, showing
+, showing
         {' '}
         {currentlyDisplayed}
         {' '}

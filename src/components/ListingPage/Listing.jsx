@@ -2,19 +2,12 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import { setListing, setFavourite, removeFavourite } from '../../redux/actions/actionCreators';
+import { setFavourite, removeFavourite } from '../../redux/actions/actionCreators';
 import withLocalStorage from '../../hocs/withLocalStorage';
 
 function Listing({ getEntry, setEntry, removeEntry }) {
   const { isFavourite, listing } = useSelector((state) => state.listing);
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    const isFavourite = checkIfFavourite();
-    if (isFavourite) {
-      dispatch(setFavourite(isFavourite));
-    }
-  }, []);
 
   const {
     price_formatted,
@@ -28,11 +21,17 @@ function Listing({ getEntry, setEntry, removeEntry }) {
     lister_url,
   } = listing;
 
-
   const checkIfFavourite = () => {
     const favs = getEntry();
     return favs.find((fav) => fav.lister_url === lister_url);
   };
+
+  useEffect(() => {
+    const state = checkIfFavourite();
+    if (state) {
+      dispatch(setFavourite(state));
+    }
+  }, []);
 
   const handleClick = (event) => {
     const name = event.target.className;
