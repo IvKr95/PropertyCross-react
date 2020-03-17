@@ -58,8 +58,8 @@ const setLocationsAC = (payload) => ({
   payload,
 });
 
-const changePage = (payload) => ({
-  type: 'CHANGE_PAGE',
+export const setLoading = (payload) => ({
+  type: 'SET_LOADING',
   payload,
 });
 
@@ -96,6 +96,7 @@ export const searchLocation = (api, params) => (dispatch) => {
           dispatch(setErrorAC('error'));
         }
       }
+      dispatch(setLoading(false));
     })
     .catch((error) => (
       dispatch(setErrorAC(error))

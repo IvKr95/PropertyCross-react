@@ -1,17 +1,19 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import {
-  searchLocation, setSearchField, setSearches, setErrorAC,
+  searchLocation, setSearchField, setSearches, setLoading,
 } from '../../redux/actions/actionCreators';
 import withLocalStorage from '../../hocs/withLocalStorage';
+import withLocation from '../../hocs/withLocation';
 import Locations from './Locations';
 import RecentSearches from './RecentSearches';
 import Error from './Error';
 
-function PropertySearch({ getEntry }) {
+function PropertySearch({ getEntry, searchByLocation }) {
   const {
+    isLoading,
     location,
     recentSearches,
     locations,
@@ -38,6 +40,7 @@ function PropertySearch({ getEntry }) {
   const handleSubmit = (event) => {
     event.preventDefault();
 
+    dispatch(setLoading(true));
     dispatch(searchLocation('/api', {
       pretty: 1,
       action: 'search_listings',
@@ -49,6 +52,7 @@ function PropertySearch({ getEntry }) {
   const handleClick = (event) => {
     const { name } = event.currentTarget.dataset;
 
+    dispatch(setLoading(true));
     dispatch(searchLocation('/api', {
       pretty: 1,
       action: 'search_listings',
@@ -62,58 +66,32 @@ function PropertySearch({ getEntry }) {
   const errorSlot = <Error error={error} />;
   const box = locations ? locationsSlot : recentSearchesSlot;
 
-  const handleSearchByLocation = () => {
-    if (!navigator.geolocation) {
-      console.error('Your browser does not support geolocation');
-      return;
-    }
-
-    const success = (position) => {
-      const latitude = Number(position.coords.latitude).toFixed(6);
-      const longitude = Number(position.coords.longitude).toFixed(6);
-
-      const centrePoint = `${latitude},${longitude}`;
-
-      dispatch(searchLocation('/api', {
-        pretty: 1,
-        action: 'search_listings',
-        encoding: 'json',
-        centre_point: centrePoint,
-      }));
-    };
-
-    const error = () => {
-      dispatch(setErrorAC('Location not enabled'));
-    };
-
-    navigator.geolocation.getCurrentPosition(success, error);
-  };
-
+  if (listings.length > 0) {
+    return <Redirect to="/search-results" />;
+  }
   return (
-    listings.length > 0 ? <Redirect to="/search-results" />
-      : (
-        <div>
-          <p>
-            Use the form below to search for houses to buy.
-            You can search by place-name, postcode, or click &lsquo;My location&rsquo;,
-            to search in your current location!
-          </p>
+    <div>
+      <p>
+        Use the form below to search for houses to buy.
+        You can search by place-name, postcode, or click &lsquo;My location&rsquo;,
+        to search in your current location!
+      </p>
 
-          <form onSubmit={handleSubmit}>
-            <input type="text" name="location" value={location} onChange={handleChange} />
-            <button type="submit">GO</button>
-          </form>
+      <form onSubmit={handleSubmit}>
+        <input type="text" name="location" value={location} onChange={handleChange} />
+        <button type="submit">{isLoading ? 'Loading...' : 'Go'}</button>
+      </form>
 
-          <button type="button" onClick={handleSearchByLocation}>My location</button>
+      <button type="button" onClick={searchByLocation}>My location</button>
 
-          {error ? errorSlot : box}
-        </div>
-      )
+      {error ? errorSlot : box}
+    </div>
   );
 }
 
 PropertySearch.propTypes = {
   getEntry: PropTypes.func.isRequired,
+  searchByLocation: PropTypes.func.isRequired,
 };
 
-export default withLocalStorage('recentSearches', PropertySearch);
+export default withLocalStorage('recentSearches', withLocation(PropertySearch));

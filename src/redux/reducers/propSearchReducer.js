@@ -3,6 +3,7 @@ import {
 } from '../actions/types';
 
 const initialState = {
+  isLoading: false,
   location: '',
   recentSearches: [],
   locations: null,
@@ -33,6 +34,11 @@ const propSearchReducer = (state = initialState, action) => {
       return {
         ...state,
         error: payload,
+      };
+    case 'SET_LOADING':
+      return {
+        ...state,
+        isLoading: payload,
       };
     default:
       return state;
