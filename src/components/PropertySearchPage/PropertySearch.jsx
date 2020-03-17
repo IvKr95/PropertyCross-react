@@ -60,9 +60,7 @@ function PropertySearch({ getEntry }) {
   const recentSearchesSlot = <RecentSearches recentSearches={recentSearches} onClick={handleClick} />;
   const locationsSlot = <Locations locations={locations} onClick={handleClick} />;
   const errorSlot = <Error error={error} />;
-  const box = (
-    locations ? locationsSlot : recentSearchesSlot
-  );
+  const box = locations ? locationsSlot : recentSearchesSlot;
 
   const handleSearchByLocation = () => {
     if (!navigator.geolocation) {

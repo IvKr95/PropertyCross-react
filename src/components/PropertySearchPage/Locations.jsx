@@ -7,7 +7,13 @@ function Locations({ locations, onClick: handleClick }) {
       <span>Please select a location below:</span>
       <ul>
         {locations.map((item) => (
-          <li key={item.place_name} className="location" data-name={item.place_name} onClick={handleClick}>
+          <li
+            key={item.place_name}
+            className="location"
+            data-name={item.place_name}
+            onClick={handleClick}
+            onKeyPress={handleClick}
+          >
             <span className="location__name">
               {item.title}
             </span>

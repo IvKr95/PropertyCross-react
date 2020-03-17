@@ -28,6 +28,7 @@ function Listing({ getEntry, setEntry, removeEntry }) {
 
   useEffect(() => {
     const state = checkIfFavourite();
+    console.log(state);
     if (state) {
       dispatch(setFavourite(state));
     }

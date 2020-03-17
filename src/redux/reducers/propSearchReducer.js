@@ -10,27 +10,29 @@ const initialState = {
 };
 
 const propSearchReducer = (state = initialState, action) => {
-  switch (action.type) {
+  const { type, payload } = action;
+
+  switch (type) {
     case SET_SEARCHES:
       return {
         ...state,
-        recentSearches: action.payload,
+        recentSearches: payload,
       };
 
     case SET_FIELD:
       return {
         ...state,
-        location: action.payload,
+        location: payload,
       };
     case SET_LOCATIONS:
       return {
         ...state,
-        locations: action.payload,
+        locations: payload,
       };
     case SET_ERROR:
       return {
         ...state,
-        error: action.payload,
+        error: payload,
       };
     default:
       return state;

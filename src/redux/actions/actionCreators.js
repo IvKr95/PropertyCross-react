@@ -77,8 +77,6 @@ export const searchLocation = (api, params) => (dispatch) => {
               props: result.data.response.total_results,
             });
 
-            dispatch(changePage('searchResults'));
-
             dispatch(setPropsAC({
               currentlyDisplayed: Number(result.data.request.num_res),
               searchTerm: result.data.request.location,

@@ -22,7 +22,6 @@ function RecentSearches({ recentSearches, onClick: handleClick }) {
         ))}
       </ul>
     </div>
-
   );
 }
 
