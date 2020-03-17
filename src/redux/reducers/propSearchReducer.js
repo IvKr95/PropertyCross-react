@@ -1,5 +1,5 @@
 import {
-  SET_SEARCHES, SET_FIELD, SET_LOCATIONS, SET_ERROR,
+  SET_SEARCHES, SET_FIELD, SET_LOCATIONS, SET_ERROR, REMOVE_SEARCHES,
 } from '../actions/types';
 
 const initialState = {
@@ -19,7 +19,8 @@ const propSearchReducer = (state = initialState, action) => {
         ...state,
         recentSearches: payload,
       };
-
+    case REMOVE_SEARCHES:
+      return initialState;
     case SET_FIELD:
       return {
         ...state,

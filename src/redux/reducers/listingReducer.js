@@ -1,4 +1,6 @@
-import { SET_LISTING, SET_FAVOURITE, REMOVE_FAVOURITE } from '../actions/types';
+import {
+  SET_LISTING, SET_FAVOURITE, REMOVE_FAVOURITE, REMOVE_LISTING,
+} from '../actions/types';
 
 const initialState = {
   isFavourite: false,
@@ -22,6 +24,9 @@ const listingReducer = (state = initialState, action) => {
         ...state,
         isFavourite: false,
       };
+    case REMOVE_LISTING:
+      return initialState;
+
     default:
       return state;
   }

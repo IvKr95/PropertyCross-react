@@ -10,9 +10,10 @@ function Routes() {
   return (
     <Switch>
       <Route path="/search-results" component={SearchResults} exact />
-      <Route path="/listing-page" component={Listing} />
-      <Route path="/favourites" component={Favourites} />
+      <Route path="/listing-page" component={Listing} exact />
+      <Route path="/favourites" component={Favourites} exact />
       <Route path="/" component={PropertySearch} exact />
+      <Route path="*" render={() => <span>Page Not Exist</span>} />
     </Switch>
   );
 }

@@ -1,16 +1,21 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import {
   setListing,
   searchLocation,
+  removeProps,
 } from '../../redux/actions/actionCreators';
 import Listings from './Listings';
 
 
-function SearchResults(props) {
+function SearchResults() {
   const {
-    listings, currentlyDisplayed, total, searchTerm, page,
+    page,
+    total,
+    listings,
+    searchTerm,
+    currentlyDisplayed,
   } = useSelector((state) => state.searchResults);
   const dispatch = useDispatch();
 

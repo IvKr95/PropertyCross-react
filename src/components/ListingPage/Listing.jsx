@@ -2,7 +2,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import { setFavourite, removeFavourite } from '../../redux/actions/actionCreators';
+import { setFavourite, removeFavourite, removeListing } from '../../redux/actions/actionCreators';
 import withLocalStorage from '../../hocs/withLocalStorage';
 
 function Listing({ getEntry, setEntry, removeEntry }) {
@@ -28,10 +28,12 @@ function Listing({ getEntry, setEntry, removeEntry }) {
 
   useEffect(() => {
     const state = checkIfFavourite();
-    console.log(state);
     if (state) {
       dispatch(setFavourite(state));
     }
+    return () => {
+      dispatch(removeListing());
+    };
   }, []);
 
   const handleClick = (event) => {

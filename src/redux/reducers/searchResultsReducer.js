@@ -16,6 +16,8 @@ const searchResultsReducer = (state = initialState, action) => {
         currentlyDisplayed: state.currentlyDisplayed + action.payload.currentlyDisplayed,
         listings: [...state.listings, ...action.payload.listings],
       };
+    case 'REMOVE_PROPS':
+      return initialState;
     default:
       return state;
   }

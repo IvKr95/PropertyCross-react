@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import {
-  searchLocation, setErrorAC,
+  searchLocation, setError,
 } from '../redux/actions/actionCreators';
 
 const withLocation = (Component) => (props) => {
@@ -28,7 +28,7 @@ const withLocation = (Component) => (props) => {
     };
 
     const error = () => {
-      dispatch(setErrorAC('Location not enabled'));
+      dispatch(setError('Location not enabled'));
     };
 
     navigator.geolocation.getCurrentPosition(success, error);

@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
-import { Redirect, Link } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import {
-  searchLocation, setSearchField, setSearches, setLoading,
+  searchLocation, setSearchField, setSearches, removeSearches,
 } from '../../redux/actions/actionCreators';
 import withLocalStorage from '../../hocs/withLocalStorage';
 import withLocation from '../../hocs/withLocation';
@@ -29,7 +29,10 @@ function PropertySearch({ getEntry, searchByLocation }) {
     if (entry && entry.length > 0) {
       dispatch(setSearches(entry));
     }
-  }, [locations, error]);
+    return () => {
+      dispatch(removeSearches());
+    };
+  }, [locations, error, isLoading]);
 
   const handleChange = (event) => {
     const { value } = event.target;
@@ -40,7 +43,6 @@ function PropertySearch({ getEntry, searchByLocation }) {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    dispatch(setLoading(true));
     dispatch(searchLocation('/api', {
       pretty: 1,
       action: 'search_listings',
@@ -52,7 +54,6 @@ function PropertySearch({ getEntry, searchByLocation }) {
   const handleClick = (event) => {
     const { name } = event.currentTarget.dataset;
 
-    dispatch(setLoading(true));
     dispatch(searchLocation('/api', {
       pretty: 1,
       action: 'search_listings',
@@ -66,8 +67,8 @@ function PropertySearch({ getEntry, searchByLocation }) {
   const errorSlot = <Error error={error} />;
   const box = locations ? locationsSlot : recentSearchesSlot;
 
-  if (listings.length > 0) {
-    return <Redirect to="/search-results" />;
+  if (!isLoading && listings.length > 0) {
+    return <Redirect push to="/search-results" />;
   }
   return (
     <div>
