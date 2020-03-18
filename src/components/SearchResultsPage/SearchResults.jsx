@@ -4,11 +4,10 @@ import { useHistory } from 'react-router-dom';
 import {
   setListing,
   searchLocation,
-  removeProps,
 } from '../../redux/actions/actionCreators';
 import Listings from './Listings';
 
-const SearchResults = (props) => {
+const SearchResults = () => {
   const {
     page,
     total,

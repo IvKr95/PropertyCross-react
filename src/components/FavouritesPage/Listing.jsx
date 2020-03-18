@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
@@ -8,6 +9,7 @@ function Listing({ fav, onClick: handleClick }) {
       className="listing"
       data-about={JSON.stringify(fav)}
       onClick={handleClick}
+      onKeyPress={handleClick}
     >
       <Link to={{
         pathname: '/listing-page',
@@ -28,8 +30,8 @@ function Listing({ fav, onClick: handleClick }) {
 Listing.propTypes = {
   fav: PropTypes.shape({
     thumb_url: PropTypes.string,
-    thumb_height: PropTypes.string,
-    thumb_width: PropTypes.string,
+    thumb_height: PropTypes.number,
+    thumb_width: PropTypes.number,
     title: PropTypes.string,
     price_formatted: PropTypes.string,
   }).isRequired,

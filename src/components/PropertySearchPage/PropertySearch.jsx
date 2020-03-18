@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import {
-  searchLocation, setSearchField, setSearches, removeSearches,
+  searchLocation, setSearchField, setSearches,
 } from '../../redux/actions/actionCreators';
 import withLocalStorage from '../../hocs/withLocalStorage';
 import withLocation from '../../hocs/withLocation';
@@ -23,7 +23,6 @@ const PropertySearch = ({ getEntry, searchByLocation }) => {
   const { listings } = useSelector((state) => state.searchResults);
   const history = useHistory();
   const dispatch = useDispatch();
-  const ref = useRef(false);
 
   useEffect(() => {
     const entry = getEntry();
@@ -41,7 +40,7 @@ const PropertySearch = ({ getEntry, searchByLocation }) => {
     if (!isLoading && listings.length) {
       history.push('/search-results');
     }
-  }, [isLoading]);
+  }, [isLoading, listings]);
 
   const handleChange = (event) => {
     const { value } = event.target;

@@ -1,4 +1,4 @@
-import { SET_PROPS } from '../actions/types';
+import { SET_PROPS, REMOVE_PROPS } from '../actions/types';
 
 const initialState = {
   searchTerm: '',
@@ -16,7 +16,7 @@ const searchResultsReducer = (state = initialState, action) => {
         currentlyDisplayed: state.currentlyDisplayed + action.payload.currentlyDisplayed,
         listings: [...state.listings, ...action.payload.listings],
       };
-    case 'REMOVE_PROPS':
+    case REMOVE_PROPS:
       return initialState;
     default:
       return state;

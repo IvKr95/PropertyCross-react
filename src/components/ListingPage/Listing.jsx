@@ -1,14 +1,14 @@
 /* eslint-disable camelcase */
 import React, { useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
-import { Redirect, useHistory } from 'react-router-dom';
-import { setFavourite, removeFavourite, removeListing } from '../../redux/actions/actionCreators';
+import { Redirect } from 'react-router-dom';
+import { setFavourite, removeFavourite } from '../../redux/actions/actionCreators';
 import withLocalStorage from '../../hocs/withLocalStorage';
 
-function Listing({ getEntry, setEntry, removeEntry }) {
+const Listing = ({ getEntry, setEntry, removeEntry }) => {
   const { isFavourite, listing } = useSelector((state) => state.listing);
   const dispatch = useDispatch();
-  const history = useHistory();
 
   const {
     price_formatted,
@@ -22,13 +22,14 @@ function Listing({ getEntry, setEntry, removeEntry }) {
     lister_url,
   } = listing;
 
-  const checkIfFavourite = () => {
-    const favs = getEntry();
-    return favs.find((fav) => fav.lister_url === lister_url);
-  };
-
   useEffect(() => {
+    function checkIfFavourite() {
+      const favs = getEntry();
+      return favs.find((fav) => fav.lister_url === lister_url);
+    }
+
     const state = checkIfFavourite();
+
     if (state) {
       dispatch(setFavourite(state));
     }
@@ -74,6 +75,12 @@ bathrooms
       <p>{summary}</p>
     </main>
   );
-}
+};
+
+Listing.propTypes = {
+  getEntry: PropTypes.func.isRequired,
+  setEntry: PropTypes.func.isRequired,
+  removeEntry: PropTypes.func.isRequired,
+};
 
 export default withLocalStorage('favourites', Listing);

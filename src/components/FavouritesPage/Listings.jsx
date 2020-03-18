@@ -6,7 +6,7 @@ function Listings({ favourites, onClick: handleClick }) {
   return (
     <ul className="listings">
       {favourites.map((fav) => (
-        <Listing fav={fav} onClick={handleClick} />
+        <Listing key={fav.lister_url} fav={fav} onClick={handleClick} />
       ))}
     </ul>
   );

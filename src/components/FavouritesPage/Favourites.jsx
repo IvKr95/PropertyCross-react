@@ -1,5 +1,6 @@
 /* eslint-disable camelcase */
 import React, { useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { setListing, setFavourites } from '../../redux/actions/actionCreators';
 import withLocalStorage from '../../hocs/withLocalStorage';
@@ -12,7 +13,7 @@ const Favourites = ({ getEntry }) => {
   useEffect(() => {
     const entry = getEntry();
     dispatch(setFavourites(entry));
-  }, []);
+  }, [getEntry]);
 
   const handleClick = (event) => {
     const { about } = event.currentTarget.dataset;
@@ -25,6 +26,10 @@ const Favourites = ({ getEntry }) => {
       <Listings favourites={favourites} onClick={handleClick} />
     </main>
   );
+};
+
+Favourites.propTypes = {
+  getEntry: PropTypes.func.isRequired,
 };
 
 export default withLocalStorage('favourites', Favourites);

@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 
 const withLocalStorage = (key, Component) => (props) => {
-  const getEntry = () => {
+  const getEntry = useCallback(() => {
     if (!localStorage.getItem(key)) {
       return [];
     }
     return JSON.parse(localStorage.getItem(key));
-  };
+  }, [key]);
 
   const setEntry = (item) => {
     if (!getEntry()) {

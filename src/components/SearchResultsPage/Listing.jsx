@@ -9,6 +9,7 @@ function Listing({ listing, onClick: handleClick }) {
       className="listing"
       data-about={JSON.stringify(listing)}
       onClick={handleClick}
+      onKeyPress={handleClick}
     >
       <img className="listing__thumb" src={listing.thumb_url} alt={listing.title} width={listing.thumb_width} height={listing.thumb_height} />
       <span className="listing__price">
