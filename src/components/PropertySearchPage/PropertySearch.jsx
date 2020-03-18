@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import {
   searchLocation, setSearchField, setSearches, removeSearches,
 } from '../../redux/actions/actionCreators';
@@ -11,7 +11,7 @@ import Locations from './Locations';
 import RecentSearches from './RecentSearches';
 import Error from './Error';
 
-function PropertySearch({ getEntry, searchByLocation }) {
+const PropertySearch = ({ getEntry, searchByLocation }) => {
   const {
     isLoading,
     location,
@@ -19,20 +19,29 @@ function PropertySearch({ getEntry, searchByLocation }) {
     locations,
     error,
   } = useSelector((state) => state.propSearch);
+  const firstRun = useRef(true);
   const { listings } = useSelector((state) => state.searchResults);
-
+  const history = useHistory();
   const dispatch = useDispatch();
+  const ref = useRef(false);
 
   useEffect(() => {
     const entry = getEntry();
 
-    if (entry && entry.length > 0) {
+    if (entry && entry.length) {
       dispatch(setSearches(entry));
     }
-    return () => {
-      dispatch(removeSearches());
-    };
-  }, [locations, error, isLoading]);
+  }, [locations, error]);
+
+  useEffect(() => {
+    if (firstRun.current) {
+      firstRun.current = false;
+      return;
+    }
+    if (!isLoading && listings.length) {
+      history.push('/search-results');
+    }
+  }, [isLoading]);
 
   const handleChange = (event) => {
     const { value } = event.target;
@@ -67,9 +76,6 @@ function PropertySearch({ getEntry, searchByLocation }) {
   const errorSlot = <Error error={error} />;
   const box = locations ? locationsSlot : recentSearchesSlot;
 
-  if (!isLoading && listings.length > 0) {
-    return <Redirect push to="/search-results" />;
-  }
   return (
     <div>
       <p>
@@ -88,7 +94,7 @@ function PropertySearch({ getEntry, searchByLocation }) {
       {error ? errorSlot : box}
     </div>
   );
-}
+};
 
 PropertySearch.propTypes = {
   getEntry: PropTypes.func.isRequired,

@@ -5,7 +5,7 @@ import { setListing, setFavourites } from '../../redux/actions/actionCreators';
 import withLocalStorage from '../../hocs/withLocalStorage';
 import Listings from './Listings';
 
-function Favourites({ getEntry }) {
+const Favourites = ({ getEntry }) => {
   const favourites = useSelector((state) => state.favourites);
   const dispatch = useDispatch();
 
@@ -25,6 +25,6 @@ function Favourites({ getEntry }) {
       <Listings favourites={favourites} onClick={handleClick} />
     </main>
   );
-}
+};
 
 export default withLocalStorage('favourites', Favourites);

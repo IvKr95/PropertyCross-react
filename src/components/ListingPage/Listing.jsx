@@ -1,13 +1,14 @@
 /* eslint-disable camelcase */
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import { Redirect, useHistory } from 'react-router-dom';
 import { setFavourite, removeFavourite, removeListing } from '../../redux/actions/actionCreators';
 import withLocalStorage from '../../hocs/withLocalStorage';
 
 function Listing({ getEntry, setEntry, removeEntry }) {
   const { isFavourite, listing } = useSelector((state) => state.listing);
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const {
     price_formatted,
@@ -31,9 +32,6 @@ function Listing({ getEntry, setEntry, removeEntry }) {
     if (state) {
       dispatch(setFavourite(state));
     }
-    return () => {
-      dispatch(removeListing());
-    };
   }, []);
 
   const handleClick = (event) => {

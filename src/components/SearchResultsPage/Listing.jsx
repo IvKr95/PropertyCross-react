@@ -2,7 +2,6 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 
 function Listing({ listing, onClick: handleClick }) {
   return (
@@ -11,18 +10,13 @@ function Listing({ listing, onClick: handleClick }) {
       data-about={JSON.stringify(listing)}
       onClick={handleClick}
     >
-      <Link to={{
-        pathname: '/listing-page',
-      }}
-      >
-        <img className="listing__thumb" src={listing.thumb_url} alt={listing.title} width={listing.thumb_width} height={listing.thumb_height} />
-        <span className="listing__price">
-          {listing.price_formatted}
-        </span>
-        <span className="listing__title">
-          {listing.title}
-        </span>
-      </Link>
+      <img className="listing__thumb" src={listing.thumb_url} alt={listing.title} width={listing.thumb_width} height={listing.thumb_height} />
+      <span className="listing__price">
+        {listing.price_formatted}
+      </span>
+      <span className="listing__title">
+        {listing.title}
+      </span>
     </li>
   );
 }

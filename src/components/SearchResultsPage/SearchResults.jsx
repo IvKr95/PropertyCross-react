@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import {
   setListing,
   searchLocation,
@@ -8,8 +8,7 @@ import {
 } from '../../redux/actions/actionCreators';
 import Listings from './Listings';
 
-
-function SearchResults() {
+const SearchResults = (props) => {
   const {
     page,
     total,
@@ -18,10 +17,18 @@ function SearchResults() {
     currentlyDisplayed,
   } = useSelector((state) => state.searchResults);
   const dispatch = useDispatch();
+  const history = useHistory();
+
+  useEffect(() => {
+    if (!listings.length) {
+      history.replace('/');
+    }
+  }, [listings]);
 
   const handleClick = (event) => {
     const { about } = event.currentTarget.dataset;
     dispatch(setListing(about));
+    history.push('/listing-page');
   };
 
   const loadMore = () => {
@@ -33,10 +40,6 @@ function SearchResults() {
       place_name: searchTerm,
     }));
   };
-
-  if (listings.length === 0) {
-    return <Redirect to="/" />;
-  }
 
   return (
     <div>
@@ -69,6 +72,6 @@ properties
       </p>
     </div>
   );
-}
+};
 
 export default SearchResults;
