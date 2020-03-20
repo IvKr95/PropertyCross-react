@@ -6,7 +6,8 @@ import { Link } from 'react-router-dom';
 function Listing({ fav, onClick: handleClick }) {
   return (
     <li
-      className="listing"
+      className="card mb-3 listing"
+      style={{ maxWidth: '540px' }}
       data-about={JSON.stringify(fav)}
       onClick={handleClick}
       onKeyPress={handleClick}
@@ -15,13 +16,19 @@ function Listing({ fav, onClick: handleClick }) {
         pathname: '/listing-page',
       }}
       >
-        <img className="listing__thumb" src={fav.thumb_url} alt={fav.title} width={fav.thumb_width} height={fav.thumb_height} />
-        <span className="listing__price">
-          {fav.price_formatted}
-        </span>
-        <span className="listing__title">
-          {fav.title}
-        </span>
+        <div className="row no-gutters">
+          <div className="col-md-4">
+            <img className="card-img listing__thumb" src={fav.thumb_url} alt={fav.title} />
+          </div>
+          <div className="col-md-8">
+            <div className="card-body">
+              <h5 className="card-title listing__title">{fav.title}</h5>
+              <span className="card-text listing__price">
+                {fav.price_formatted}
+              </span>
+            </div>
+          </div>
+        </div>
       </Link>
     </li>
   );

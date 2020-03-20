@@ -6,18 +6,18 @@ function RecentSearches({ recentSearches, onClick: handleClick }) {
   return (
     <div>
       <span>Recent Searches:</span>
-      <ul className="recent-searches">
+      <ul className="list-group recent-searches">
         {recentSearches.map((item) => (
           <li
             key={item.name}
-            className="recent-search"
+            className="list-group-item list-group-item-action d-flex justify-content-between align-items-center recent-search"
             data-name={item.name}
             onClick={handleClick}
             onKeyPress={handleClick}
           >
-            <span className="recent-search__name">{item.name}</span>
+            {item.name}
             {' '}
-            <span className="recent-search__number">{item.props}</span>
+            <span className="badge badge-primary badge-pill recent-search__number">{item.props}</span>
           </li>
         ))}
       </ul>

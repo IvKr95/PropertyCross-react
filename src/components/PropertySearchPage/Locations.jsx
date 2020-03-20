@@ -6,11 +6,11 @@ function Locations({ locations, onClick: handleClick }) {
   return (
     <div>
       <span>Please select a location below:</span>
-      <ul>
+      <ul className="list-group locations">
         {locations.map((item) => (
           <li
             key={item.place_name}
-            className="location"
+            className="list-group-item list-group-item-action d-flex justify-content-between align-items-center location"
             data-name={item.place_name}
             onClick={handleClick}
             onKeyPress={handleClick}
@@ -22,7 +22,6 @@ function Locations({ locations, onClick: handleClick }) {
         ))}
       </ul>
     </div>
-
   );
 }
 

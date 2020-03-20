@@ -6,18 +6,25 @@ import PropTypes from 'prop-types';
 function Listing({ listing, onClick: handleClick }) {
   return (
     <li
-      className="listing"
+      className="card mb-3 listing"
+      style={{ maxWidth: '540px' }}
       data-about={JSON.stringify(listing)}
       onClick={handleClick}
       onKeyPress={handleClick}
     >
-      <img className="listing__thumb" src={listing.thumb_url} alt={listing.title} width={listing.thumb_width} height={listing.thumb_height} />
-      <span className="listing__price">
-        {listing.price_formatted}
-      </span>
-      <span className="listing__title">
-        {listing.title}
-      </span>
+      <div className="row no-gutters">
+        <div className="col-md-4">
+          <img className="card-img listing__thumb" src={listing.thumb_url} alt={listing.title} />
+        </div>
+        <div className="col-md-8">
+          <div className="card-body">
+            <h5 className="card-title listing__title">{listing.title}</h5>
+            <span className="card-text listing__price">
+              {listing.price_formatted}
+            </span>
+          </div>
+        </div>
+      </div>
     </li>
   );
 }

@@ -28,8 +28,8 @@ function SearchResultsView({
 
       <Listings listings={listings} onClick={handleClick} />
 
-      {currentlyDisplayed < total && <button type="button" className="load-more" onClick={onLoadMore}>Load more</button>}
-      <p>
+      {currentlyDisplayed < total && <button type="button" className="btn btn-primary load-more" onClick={onLoadMore}>Load more</button>}
+      <small className="text-muted">
         Results for
         {' '}
         {searchTerm}
@@ -42,7 +42,7 @@ function SearchResultsView({
         {total}
         {' '}
         properties
-      </p>
+      </small>
     </div>
   );
 }
