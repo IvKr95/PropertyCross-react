@@ -1,35 +1,39 @@
-import {
-  SET_LISTING, SET_FAVOURITE, REMOVE_FAVOURITE, REMOVE_LISTING,
-} from '../actions/types';
-
 const initialState = {
   isFavourite: false,
   listing: null,
 };
 
 const listingReducer = (state = initialState, action) => {
-  switch (action.type) {
-    case SET_LISTING:
+  const { type, payload } = action;
+
+  const actions = {
+    SET_LISTING() {
       return {
         ...state,
-        listing: JSON.parse(action.payload),
+        listing: JSON.parse(payload),
       };
-    case SET_FAVOURITE:
+    },
+    SET_FAVOURITE() {
       return {
         ...state,
         isFavourite: true,
       };
-    case REMOVE_FAVOURITE:
+    },
+    REMOVE_FAVOURITE() {
       return {
         ...state,
         isFavourite: false,
       };
-    case REMOVE_LISTING:
+    },
+    REMOVE_LISTING() {
       return initialState;
-
-    default:
+    },
+    default() {
       return state;
-  }
+    },
+  };
+
+  return (actions[type] || actions.default)();
 };
 
 export default listingReducer;

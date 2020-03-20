@@ -11,8 +11,7 @@ import {
   REMOVE_FAVOURITE,
   REMOVE_LISTING,
 } from './types';
-import RecentSearches from '../../dal/RecentSearches';
-import axiosInstance from '../../dal/axiosInstance';
+import locationAPI from '../../dal/locationAPI';
 
 export const setSearches = (payload) => ({
   type: SET_SEARCHES,
@@ -70,9 +69,9 @@ export const removeProps = (payload) => ({
   payload,
 });
 
-export const setError = (error) => ({
+export const setError = (payload) => ({
   type: SET_ERROR,
-  payload: error,
+  payload,
 });
 
 const setLocations = (payload) => ({
@@ -85,52 +84,27 @@ export const setLoading = (payload) => ({
   payload,
 });
 
+function getActions(type) {
+  return {
+    REQUEST: `${type}_REQUEST`,
+    SUCCESS: `${type}_SUCCESS`,
+    FAILURE: `${type}_FAILURE`,
+    ENDED: `${type}_ENDED`,
+  };
+}
 
-export const searchLocation = (api, params) => (dispatch) => {
-  dispatch(setLoading(true));
-  axiosInstance
-    .get(api, { params })
+export const searchLocation = (params) => (dispatch) => {
+  const SEARCH_LOCATION = getActions('SEARCH_LOCATION');
+  dispatch({ type: SEARCH_LOCATION.REQUEST });
+
+  locationAPI.getLocation(params)
     .then((result) => {
-      if (result.status === 200) {
-        return result.data;
-      }
-      dispatch(setError('not 200'));
-    })
-    .then(({ request, response }) => {
-      const appResCode = Number(response.application_response_code);
-
-      if (appResCode === 100 || appResCode === 101 || appResCode === 110) {
-        // the query returned a list of properties
-        return { request, response };
-      } if (appResCode === 200 || appResCode === 202) {
-        // The search term was ambiguous.
-        // In this case Nestoria returns a list of suggested locations.
-        dispatch(setLocations(response.locations));
+      if (result.listings) {
+        dispatch({ type: `${SEARCH_LOCATION.SUCCESS}_LISTINGS`, payload: result.listings });
       } else {
-        // any other response is considered an error
-        dispatch(setError('error'));
+        dispatch({ type: `${SEARCH_LOCATION.SUCCESS}_LOCATIONS`, payload: result.locations });
       }
-    })
-    .then(({ request, response }) => {
-      if (response.listings.length >= 1) {
-        RecentSearches.setNewSearch({
-          name: request.location,
-          props: response.total_results,
-        });
-
-        dispatch(setProps({
-          currentlyDisplayed: Number(request.num_res),
-          searchTerm: request.location,
-          page: request.page,
-          total: response.total_results,
-          listings: response.listings,
-        }));
-        return;
-      }
-      dispatch(setError('Zero properties returned'));
-    })
-    .catch((error) => (
-      dispatch(setError(error))
-    ))
-    .finally(() => dispatch(setLoading(false)));
+    }, (error) => {
+      dispatch({ type: SEARCH_LOCATION.FAILURE, payload: error.message });
+    }).finally(() => dispatch({ type: SEARCH_LOCATION.ENDED }));
 };

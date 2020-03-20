@@ -64,13 +64,13 @@ const Listing = ({ getEntry, setEntry, removeEntry }) => {
       <span>
         {bedroom_number}
         {' '}
-bed
+        bed
       </span>
       <span>,</span>
       <span>
         {!bathroom_number ? 'no' : bathroom_number}
         {' '}
-bathrooms
+        bathrooms
       </span>
       <p>{summary}</p>
     </main>
@@ -83,4 +83,4 @@ Listing.propTypes = {
   removeEntry: PropTypes.func.isRequired,
 };
 
-export default withLocalStorage('favourites', Listing);
+export default withLocalStorage('favourites')(Listing);

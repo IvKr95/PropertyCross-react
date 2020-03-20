@@ -1,5 +1,3 @@
-import { SET_PROPS, REMOVE_PROPS } from '../actions/types';
-
 const initialState = {
   searchTerm: '',
   page: 0,
@@ -9,18 +7,26 @@ const initialState = {
 };
 
 const searchResultsReducer = (state = initialState, action) => {
-  switch (action.type) {
-    case SET_PROPS:
+  const { type, payload } = action;
+
+  const actions = {
+    SEARCH_LOCATION_SUCCESS_LISTINGS() {
       return {
-        ...action.payload,
-        currentlyDisplayed: state.currentlyDisplayed + action.payload.currentlyDisplayed,
-        listings: [...state.listings, ...action.payload.listings],
+        ...state,
+        ...payload,
+        currentlyDisplayed: state.currentlyDisplayed + payload.currentlyDisplayed,
+        listings: [...state.listings, ...payload.listings],
       };
-    case REMOVE_PROPS:
+    },
+    REMOVE_PROPS() {
       return initialState;
-    default:
+    },
+    default() {
       return state;
-  }
+    },
+  };
+
+  return (actions[type] || actions.default)();
 };
 
 export default searchResultsReducer;

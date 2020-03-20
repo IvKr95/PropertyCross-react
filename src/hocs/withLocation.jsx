@@ -27,8 +27,12 @@ const withLocation = (Component) => (props) => {
       }));
     };
 
-    const error = () => {
-      dispatch(setError('Location not enabled'));
+    const error = (err) => {
+      if (err.code === 1) {
+        dispatch(setError('Location not enabled'));
+        return;
+      }
+      dispatch(setError('Location not found / timeout'));
     };
 
     navigator.geolocation.getCurrentPosition(success, error);

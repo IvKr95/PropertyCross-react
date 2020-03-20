@@ -1,49 +1,72 @@
-import {
-  SET_SEARCHES, SET_FIELD, SET_LOCATIONS, SET_ERROR, REMOVE_SEARCHES, SET_LOADING,
-} from '../actions/types';
-
 const initialState = {
   isLoading: false,
   location: '',
   recentSearches: [],
   locations: null,
+  isError: false,
   error: null,
 };
 
 const propSearchReducer = (state = initialState, action) => {
   const { type, payload } = action;
 
-  switch (type) {
-    case SET_SEARCHES:
+  const actions = {
+    SET_SEARCHES() {
       return {
         ...state,
         recentSearches: payload,
       };
-    case REMOVE_SEARCHES:
-      return initialState;
-    case SET_FIELD:
+    },
+    REMOVE_SEARCHES() {
+      return {
+        ...state,
+        recentSearches: [],
+      };
+    },
+    SET_FIELD() {
       return {
         ...state,
         location: payload,
       };
-    case SET_LOCATIONS:
+    },
+    SEARCH_LOCATION_SUCCESS_LOCATIONS() {
       return {
         ...state,
         locations: payload,
       };
-    case SET_ERROR:
+    },
+    SET_ERROR() {
       return {
         ...state,
+        isError: true,
         error: payload,
       };
-    case SET_LOADING:
+    },
+    SEARCH_LOCATION_FAILURE() {
       return {
         ...state,
-        isLoading: payload,
+        isError: true,
+        error: payload,
       };
-    default:
+    },
+    SEARCH_LOCATION_REQUEST() {
+      return {
+        ...state,
+        isLoading: true,
+      };
+    },
+    SEARCH_LOCATION_ENDED() {
+      return {
+        ...state,
+        isLoading: false,
+      };
+    },
+    default() {
       return state;
-  }
+    },
+  };
+
+  return (actions[type] || actions.default)();
 };
 
 export default propSearchReducer;

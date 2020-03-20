@@ -32,4 +32,4 @@ Favourites.propTypes = {
   getEntry: PropTypes.func.isRequired,
 };
 
-export default withLocalStorage('favourites', Favourites);
+export default withLocalStorage('favourites')(Favourites);
