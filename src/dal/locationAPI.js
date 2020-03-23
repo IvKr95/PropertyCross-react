@@ -49,7 +49,10 @@ const locationAPI = {
         }
         // any other response is considered an error
         throw new Error('other');
-      }, () => { throw new Error('Network connection issues / timeout'); });
+      },
+      () => {
+        throw new Error('Network connection issues / timeout');
+      });
   },
 };
 

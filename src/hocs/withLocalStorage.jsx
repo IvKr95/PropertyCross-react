@@ -8,26 +8,14 @@ const withLocalStorage = (key) => (Component) => (props) => {
     return JSON.parse(localStorage.getItem(key));
   }, [key]);
 
-  const setEntry = (item) => {
+  const setEntry = (item, byKey) => {
     if (!getEntry()) {
       const entry = [item];
       localStorage.setItem(key, JSON.stringify(entry));
       return;
     }
     const entry = getEntry();
-    const filtered = entry.filter((rs) => rs.lister_url !== item.lister_url);
-    filtered.unshift(item);
-    localStorage.setItem(key, JSON.stringify(filtered));
-  };
-
-  const setNewSearch = (item) => {
-    if (!getEntry()) {
-      const entry = [item];
-      localStorage.setItem(key, JSON.stringify(entry));
-      return;
-    }
-    const entry = getEntry();
-    const filtered = entry.filter((rs) => rs.name !== item.name);
+    const filtered = entry.filter((rs) => rs[byKey] !== item.byKey);
     filtered.unshift(item);
     localStorage.setItem(key, JSON.stringify(filtered));
   };
@@ -43,7 +31,6 @@ const withLocalStorage = (key) => (Component) => (props) => {
       setEntry={setEntry}
       getEntry={getEntry}
       removeEntry={removeEntry}
-      setNewSearch={setNewSearch}
       {...props}
     />
   );

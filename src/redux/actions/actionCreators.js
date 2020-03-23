@@ -2,8 +2,6 @@ import {
   SET_SEARCHES,
   REMOVE_SEARCHES,
   SET_FIELD,
-  SET_LOCATIONS,
-  SET_PROPS,
   SET_ERROR,
   SET_LISTING,
   SET_FAVOURITE,
@@ -11,7 +9,6 @@ import {
   REMOVE_FAVOURITE,
   REMOVE_LISTING,
 } from './types';
-import locationAPI from '../../dal/locationAPI';
 
 export const setSearches = (payload) => ({
   type: SET_SEARCHES,
@@ -58,12 +55,6 @@ export const removeFavouriteListing = (payload) => ({
   payload,
 });
 
-
-const setProps = (payload) => ({
-  type: SET_PROPS,
-  payload,
-});
-
 export const removeProps = (payload) => ({
   type: 'REMOVE_PROPS',
   payload,
@@ -74,37 +65,7 @@ export const setError = (payload) => ({
   payload,
 });
 
-const setLocations = (payload) => ({
-  type: SET_LOCATIONS,
-  payload,
-});
-
 export const setLoading = (payload) => ({
   type: 'SET_LOADING',
   payload,
 });
-
-function getActions(type) {
-  return {
-    REQUEST: `${type}_REQUEST`,
-    SUCCESS: `${type}_SUCCESS`,
-    FAILURE: `${type}_FAILURE`,
-    ENDED: `${type}_ENDED`,
-  };
-}
-
-export const searchLocation = (params) => (dispatch) => {
-  const SEARCH_LOCATION = getActions('SEARCH_LOCATION');
-  dispatch({ type: SEARCH_LOCATION.REQUEST });
-
-  locationAPI.getLocation(params)
-    .then((result) => {
-      if (result.listings) {
-        dispatch({ type: `${SEARCH_LOCATION.SUCCESS}_LISTINGS`, payload: result.listings });
-      } else {
-        dispatch({ type: `${SEARCH_LOCATION.SUCCESS}_LOCATIONS`, payload: result.locations });
-      }
-    }, (error) => {
-      dispatch({ type: SEARCH_LOCATION.FAILURE, payload: error.message });
-    }).finally(() => dispatch({ type: SEARCH_LOCATION.ENDED }));
-};
